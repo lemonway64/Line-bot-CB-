@@ -15,7 +15,7 @@ print("Starting...")
 BASE_URL = "https://mops.twse.com.tw"
 KEYWORD = "無擔保轉換公司債"
 DATA_FILE = "data.json"
-SEEN_IDS_FILE = "seen_ids.json"
+SEEN_IDS_FILE = "data/seen_ids.json"
 KEEP_MONTHS = 3
 
 def get_roc_year():
