@@ -15,8 +15,10 @@ PUSH_URL = "https://api.line.me/v2/bot/message/push"
 
 # 兩組顏色主題
 THEME = {
-    "unsecured": {"color": "#00897B", "emoji": "🔵", "label": "無擔保轉換公司債"},
-    "secured":   {"color": "#1565C0", "emoji": "🟢", "label": "有擔保可轉換公司債"},
+    "unsecured1": {"color": "#00897B", "emoji": "🔵", "label": "無擔保轉換公司債"},
+    "unsecured2": {"color": "#0277BD", "emoji": "🔷", "label": "無擔保可轉換公司債"},
+    "secured1":   {"color": "#6A1B9A", "emoji": "🟣", "label": "有擔保轉換公司債"},
+    "secured2":   {"color": "#1565C0", "emoji": "🟢", "label": "有擔保可轉換公司債"},
 }
 
 
@@ -28,7 +30,7 @@ def _headers():
 
 
 def build_announcement_card(ann: dict, keyword_type: str) -> dict:
-    theme = THEME.get(keyword_type, THEME["unsecured"])
+    theme = THEME.get(keyword_type, THEME["secured1"])
     market_color = "#00897B" if ann.get("market") == "上市" else "#1565C0"
     doc_url = ann.get("doc_url", "") or "https://mops.twse.com.tw/mops/web/t51sb10"
     short_title = ann.get("title", "無主旨")
@@ -100,7 +102,7 @@ def build_announcement_card(ann: dict, keyword_type: str) -> dict:
 
 
 def build_summary_header(count: int, date_str: str, keyword_label: str, keyword_type: str) -> dict:
-    theme = THEME.get(keyword_type, THEME["unsecured"])
+    theme = THEME.get(keyword_type, THEME["secured1"])
     return {
         "type": "bubble",
         "size": "kilo",
@@ -128,7 +130,7 @@ def build_summary_header(count: int, date_str: str, keyword_label: str, keyword_
 
 
 def build_no_news_bubble(date_str: str, keyword_label: str, keyword_type: str) -> dict:
-    theme = THEME.get(keyword_type, THEME["unsecured"])
+    theme = THEME.get(keyword_type, THEME["secured1"])
     return {
         "type": "bubble",
         "size": "kilo",
