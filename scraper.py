@@ -17,10 +17,12 @@ DATA_FILE = "data.json"
 SEEN_IDS_FILE = "data/seen_ids.json"
 KEEP_MONTHS = 3
 
-# 兩組關鍵字
+# 四組關鍵字
 KEYWORDS = {
-    "unsecured": "無擔保轉換公司債",
-    "secured":   "有擔保可轉換公司債",
+    "unsecured1": "無擔保轉換公司債",
+    "unsecured2": "無擔保可轉換公司債",
+    "secured1":   "有擔保轉換公司債",
+    "secured2":   "有擔保可轉換公司債",
 }
 
 
