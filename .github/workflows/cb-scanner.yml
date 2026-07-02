@@ -1,44 +1,35 @@
-name: CB Scanner + LINE 通知
+name: 每日掃描可轉債公告並推播 LINE
 
 on:
   schedule:
-    # 每天台灣時間 08:30（UTC+8 → UTC 00:30）推送
-    - cron: "0 0 * * 1-5"   # 週一到週五（排除假日推送可再優化）
-  workflow_dispatch:           # 允許手動觸發（測試用）
+    - cron: '30 13 * * *'
+  workflow_dispatch:
 
 jobs:
   scan-and-notify:
     runs-on: ubuntu-latest
     permissions:
-      contents: write          # 允許 commit data/*.json 回 repo
-
+      contents: write
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: '3.11'
 
       - name: Install dependencies
-        run: |
-          pip install requests beautifulsoup4 lxml
+        run: pip install requests beautifulsoup4
 
-      - name: Run scraper & push LINE notification
+      - name: Run scraper + LINE notify
         env:
           LINE_CHANNEL_ACCESS_TOKEN: ${{ secrets.LINE_CHANNEL_ACCESS_TOKEN }}
           LINE_GROUP_ID: ${{ secrets.LINE_GROUP_ID }}
-        run: |
-          python scraper.py
+        run: python scraper.py
 
-      - name: Commit updated data files
+      - name: Commit and push data
         run: |
-          git config user.name  "github-actions[bot]"
+          git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/announcements.json data/seen_ids.json
-          # 若無變更則跳過 commit（避免報錯）
+          git add data.json data/seen_ids.json
           git diff --cached --quiet || git commit -m "chore: update CB announcements $(date +'%Y-%m-%d')"
           git push
